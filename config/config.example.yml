@@ -1,0 +1,13 @@
+releaseBranch: master
+releaseCandidateBranch: develop
+
+projects:
+  payment-service:
+    url: "https://jenkins.example.com/job/payment-service/build"
+    headers:
+      X-Jenkins-Token: "${PAYMENT_SERVICE_JENKINS_TOKEN}"
+
+  customer-service:
+    url: "https://jenkins.example.com/job/customer-service/build"
+    headers:
+      X-Jenkins-Token: "${CUSTOMER_SERVICE_JENKINS_TOKEN}"
