@@ -51,8 +51,6 @@ public final class JenkinsClient {
                 (name, value) -> requestBuilder.header(name, expandEnvironment(value))
         );
 
-        applyBasicAuthentication(requestBuilder);
-
         try {
             HttpResponse<String> response = httpClient.send(
                     requestBuilder.build(),
@@ -71,27 +69,6 @@ public final class JenkinsClient {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Jenkins request was interrupted.", e);
         }
-    }
-
-    private void applyBasicAuthentication(HttpRequest.Builder builder) {
-        String username = System.getenv("JENKINS_USERNAME");
-        String token = System.getenv("JENKINS_API_TOKEN");
-
-        if (isBlank(username) && isBlank(token)) {
-            return;
-        }
-
-        if (isBlank(username) || isBlank(token)) {
-            throw new IllegalStateException(
-                    "Define both JENKINS_USERNAME and JENKINS_API_TOKEN."
-            );
-        }
-
-        String credentials = username + ":" + token;
-        String encoded = Base64.getEncoder()
-                .encodeToString(credentials.getBytes(StandardCharsets.UTF_8));
-
-        builder.header("Authorization", "Basic " + encoded);
     }
 
     private String expandEnvironment(String value) {
@@ -123,9 +100,5 @@ public final class JenkinsClient {
         }
 
         return result;
-    }
-
-    private boolean isBlank(String value) {
-        return value == null || value.isBlank();
     }
 }
