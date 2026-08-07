@@ -72,7 +72,7 @@ public final class PublishService {
         if (generateChangelog && !dryRun) {
             changelogFile.prepend(changelogSection);
             git.addFile("CHANGELOG.md");
-            git.commit("docs: update changelog for " + tag);
+            git.commit("(docs) update changelog for " + tag);
             git.pushCurrentBranch(branch);
         }
 
