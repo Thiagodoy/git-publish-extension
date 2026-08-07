@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.1-rc0.03] - 2026-08-07
+
+### ✨ Features
+
+- (feat) Update documentation (`613263b`)
+
+### 🐛 Bug Fixes
+
+- (fix) Created Enum to utilized the same pattern in others places (`1ebda25`)
+- (fix) Remove Jenkins authentication (`f50a1c6`)
+
+### 📚 Documentation
+
+- (docs) Improve the sections using icons (`fc6808b`)
+- (docs) Removing last tag (`5ed411e`)
+
+### 🔄 Other Changes
+
+- (doc) Update changelog documentation (`0bc8ec0`)
+
 ## [v1.0.1-rc0.02] - 2026-08-07
 
 ### Bug Fixes
