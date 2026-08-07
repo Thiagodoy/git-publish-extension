@@ -71,31 +71,26 @@ public final class ChangelogGenerator {
         String lower = normalized.toLowerCase();
 
         if (normalized.contains("!:")) {
-            return entry("Breaking Changes", normalized, shortCommit);
+            return entry("💥 Breaking Changes", normalized, shortCommit);
         }
-        if (lower.startsWith("(feat)")) {
-            return entry("Features", stripPrefix(normalized), shortCommit);
-        }
-        if (lower.contains("(fix)")) {
-            return entry("Bug Fixes", stripPrefix(normalized), shortCommit);
-        }
-        if (lower.startsWith("(perf)")) {
-            return entry("Performance", stripPrefix(normalized), shortCommit);
-        }
-        if (lower.startsWith("(docs)") ) {
-            return entry("Documentation", stripPrefix(normalized), shortCommit);
-        }
-        /*if (lower.startsWith("chore:")
-                || lower.startsWith("chore(")
-                || lower.startsWith("refactor:")
-                || lower.startsWith("refactor(")
-                || lower.startsWith("build:")
-                || lower.startsWith("ci:")
-                || lower.startsWith("test:")) {
-            return entry("Maintenance", stripPrefix(normalized), shortCommit);
-        }*/
 
-        return entry("Other Changes", normalized, shortCommit);
+        if (lower.startsWith("(feat)")) {
+            return entry("✨ Features", stripPrefix(normalized), shortCommit);
+        }
+
+        if (lower.contains("(fix)")) {
+            return entry("🐛 Bug Fixes", stripPrefix(normalized), shortCommit);
+        }
+
+        if (lower.startsWith("(perf)")) {
+            return entry("⚡ Performance", stripPrefix(normalized), shortCommit);
+        }
+
+        if (lower.startsWith("(docs)")) {
+            return entry("📚 Documentation", stripPrefix(normalized), shortCommit);
+        }
+
+        return entry("🔄 Other Changes", normalized, shortCommit);
     }
 
     private ChangelogEntry entry(String category, String description, String shortCommit) {
