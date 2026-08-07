@@ -2,6 +2,10 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.2] - 2026-08-07
+
+✅ — everything is fine, but can imply a successful action.
+
 ## [v1.0.1-rc0.04] - 2026-08-07
 
 ### ⚡ Performance
