@@ -70,22 +70,22 @@ public final class ChangelogGenerator {
         String normalized = subject.trim();
         String lower = normalized.toLowerCase();
 
-        if (normalized.contains("!:") || lower.contains("breaking change")) {
+        if (normalized.contains("!:")) {
             return entry("Breaking Changes", normalized, shortCommit);
         }
-        if (lower.startsWith("feat:") || lower.startsWith("feat(")) {
+        if (lower.startsWith("(feat)")) {
             return entry("Features", stripPrefix(normalized), shortCommit);
         }
-        if (lower.startsWith("fix:") || lower.startsWith("fix(")) {
+        if (lower.contains("(fix)")) {
             return entry("Bug Fixes", stripPrefix(normalized), shortCommit);
         }
-        if (lower.startsWith("perf:") || lower.startsWith("perf(")) {
+        if (lower.startsWith("(perf)")) {
             return entry("Performance", stripPrefix(normalized), shortCommit);
         }
-        if (lower.startsWith("docs:") || lower.startsWith("docs(")) {
+        if (lower.startsWith("(docs)") ) {
             return entry("Documentation", stripPrefix(normalized), shortCommit);
         }
-        if (lower.startsWith("chore:")
+        /*if (lower.startsWith("chore:")
                 || lower.startsWith("chore(")
                 || lower.startsWith("refactor:")
                 || lower.startsWith("refactor(")
@@ -93,7 +93,7 @@ public final class ChangelogGenerator {
                 || lower.startsWith("ci:")
                 || lower.startsWith("test:")) {
             return entry("Maintenance", stripPrefix(normalized), shortCommit);
-        }
+        }*/
 
         return entry("Other Changes", normalized, shortCommit);
     }
