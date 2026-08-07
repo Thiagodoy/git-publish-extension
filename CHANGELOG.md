@@ -22,5 +22,3 @@ All notable changes to this project are documented in this file.
 
 - No user-facing changes recorded.
 
-All notable changes to this project are documented in this file.
-
