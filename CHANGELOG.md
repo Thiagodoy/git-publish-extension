@@ -2,16 +2,6 @@
 
 All notable changes to this project are documented in this file.
 
-## [v1.0.1-rc0.03] - 2026-08-07
-
-### Bug Fixes
-
-- (fix) Remove Jenkins authentication (`f50a1c6`)
-
-### Other Changes
-
-- (doc) Update changelog documentation (`0bc8ec0`)
-
 ## [v1.0.1-rc0.02] - 2026-08-07
 
 ### Bug Fixes
