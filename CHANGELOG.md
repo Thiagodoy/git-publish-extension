@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.1-rc0.04] - 2026-08-07
+
+### ⚡ Performance
+
+- (perf) Update Information when there is no commit log (`bd54740`)
+
 ## [v1.0.1-rc0.03] - 2026-08-07
 
 ### ✨ Features
