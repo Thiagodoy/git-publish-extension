@@ -20,14 +20,13 @@ public final class ChangelogGenerator {
         String previousTag = git.latestReachableTag().orElse(null);
         List<String> commits = git.commitSubjectsSince(previousTag);
 
-        Map<String, List<ChangelogEntry>> grouped = new LinkedHashMap<>();
-        grouped.put("Breaking Changes", new ArrayList<>());
-        grouped.put("Features", new ArrayList<>());
-        grouped.put("Bug Fixes", new ArrayList<>());
-        grouped.put("Performance", new ArrayList<>());
-        grouped.put("Documentation", new ArrayList<>());
-        grouped.put("Maintenance", new ArrayList<>());
-        grouped.put("Other Changes", new ArrayList<>());
+        Map<ConventionalCommitCategoryEnum, List<ChangelogEntry>> grouped = new LinkedHashMap<>();
+        grouped.put(ConventionalCommitCategoryEnum.BREAK_CHANGES, new ArrayList<>());
+        grouped.put(ConventionalCommitCategoryEnum.FEATURES, new ArrayList<>());
+        grouped.put(ConventionalCommitCategoryEnum.FIX, new ArrayList<>());
+        grouped.put(ConventionalCommitCategoryEnum.PERFORMANCE, new ArrayList<>());
+        grouped.put(ConventionalCommitCategoryEnum.DOCUMENTATION, new ArrayList<>());
+        grouped.put(ConventionalCommitCategoryEnum.OTHERS, new ArrayList<>());
 
         for (String commit : commits) {
             String[] parts = commit.split("\\|", 2);
@@ -42,13 +41,13 @@ public final class ChangelogGenerator {
         output.append("## [").append(tag).append("] - ").append(LocalDate.now()).append("\n\n");
 
         boolean hasEntries = false;
-        for (Map.Entry<String, List<ChangelogEntry>> group : grouped.entrySet()) {
+        for (Map.Entry<ConventionalCommitCategoryEnum, List<ChangelogEntry>> group : grouped.entrySet()) {
             if (group.getValue().isEmpty()) {
                 continue;
             }
 
             hasEntries = true;
-            output.append("### ").append(group.getKey()).append("\n\n");
+            output.append("### ").append(group.getKey().getValue()).append("\n\n");
             for (ChangelogEntry entry : group.getValue()) {
                 output.append("- ")
                         .append(entry.description())
@@ -71,29 +70,29 @@ public final class ChangelogGenerator {
         String lower = normalized.toLowerCase();
 
         if (normalized.contains("!:")) {
-            return entry("💥 Breaking Changes", normalized, shortCommit);
+            return entry(ConventionalCommitCategoryEnum.BREAK_CHANGES, normalized, shortCommit);
         }
 
         if (lower.startsWith("(feat)")) {
-            return entry("✨ Features", stripPrefix(normalized), shortCommit);
+            return entry(ConventionalCommitCategoryEnum.FEATURES, stripPrefix(normalized), shortCommit);
         }
 
         if (lower.contains("(fix)")) {
-            return entry("🐛 Bug Fixes", stripPrefix(normalized), shortCommit);
+            return entry(ConventionalCommitCategoryEnum.FIX, stripPrefix(normalized), shortCommit);
         }
 
         if (lower.startsWith("(perf)")) {
-            return entry("⚡ Performance", stripPrefix(normalized), shortCommit);
+            return entry(ConventionalCommitCategoryEnum.PERFORMANCE, stripPrefix(normalized), shortCommit);
         }
 
         if (lower.startsWith("(docs)")) {
-            return entry("📚 Documentation", stripPrefix(normalized), shortCommit);
+            return entry(ConventionalCommitCategoryEnum.DOCUMENTATION, stripPrefix(normalized), shortCommit);
         }
 
-        return entry("🔄 Other Changes", normalized, shortCommit);
+        return entry(ConventionalCommitCategoryEnum.OTHERS, normalized, shortCommit);
     }
 
-    private ChangelogEntry entry(String category, String description, String shortCommit) {
+    private ChangelogEntry entry(ConventionalCommitCategoryEnum category, String description, String shortCommit) {
         return new ChangelogEntry(category, description, shortCommit);
     }
 
