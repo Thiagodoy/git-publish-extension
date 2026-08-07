@@ -59,7 +59,7 @@ public final class ChangelogGenerator {
         }
 
         if (!hasEntries) {
-            output.append("- No user-facing changes recorded.\n\n");
+            output.append("✅ — everything is fine, but can imply a successful action.\n\n");
         }
 
         return output.toString();
