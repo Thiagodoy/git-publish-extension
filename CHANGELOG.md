@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.1-rc0.02] - 2026-08-07
+
+### Bug Fixes
+
+- (fix) Fix changelog logic (`5e8f91d`)
+
 ## [v1.0.1-rc0.01] - 2026-08-07
 
 - No user-facing changes recorded.
