@@ -26,7 +26,7 @@ public final class ChangelogFile {
                     : HEADER;
 
             String body = existing.startsWith("# Changelog")
-                    ? existing.substring(existing.indexOf('\n') + 1).stripLeading()
+                    ? existing.replace(HEADER, "")
                     : existing;
 
             Files.writeString(path, HEADER + section + body);

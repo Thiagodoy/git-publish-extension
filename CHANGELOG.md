@@ -6,15 +6,11 @@ All notable changes to this project are documented in this file.
 
 - No user-facing changes recorded.
 
-All notable changes to this project are documented in this file.
-
 ## [v1.0.1-alpha0.03] - 2026-08-07
 
 ### Bug Fixes
 
 - (fix) Update Conventional commit (`47f2f1d`)
-
-All notable changes to this project are documented in this file.
 
 ## [v1.0.1-alpha0.02] - 2026-08-07
 
