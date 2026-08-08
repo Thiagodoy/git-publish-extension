@@ -98,7 +98,7 @@ public final class PublishCommand implements Callable<Integer> {
             log.error("operation:call, message:" + e.getMessage(), e);
             return 2;
         } catch (Exception e) {
-            System.err.println("[ERROR] " + e.getMessage());
+            log.error("operation:call, message:" + e.getMessage(), e);
             return 1;
         }
     }
