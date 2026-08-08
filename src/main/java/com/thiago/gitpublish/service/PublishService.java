@@ -10,6 +10,9 @@ import com.thiago.gitpublish.model.PublishContext;
 import com.thiago.gitpublish.model.TagType;
 import com.thiago.gitpublish.validation.TagPolicy;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class PublishService {
 
     private final GitClient git;
@@ -48,7 +51,7 @@ public final class PublishService {
 
         git.ensureCleanWorkingTree();
 
-        System.out.println("[INFO] Fetching branch and remote tags...");
+        log.info("Fetching branch and remote tags...");
         git.fetchBranchAndTags(branch);
         git.ensureBranchSynchronized(branch);
 
