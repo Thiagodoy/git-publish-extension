@@ -38,6 +38,3 @@ All notable changes to this project are documented in this file.
 - (doc) Update changelog documentation (`0bc8ec0`)
 - docs: update changelog for v1.0.1-alpha0.02 (`01d5004`)
 
-# Changelog
-
-All notable changes to this project are documented in this file.
