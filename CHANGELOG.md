@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.1.0] - 2026-08-08
+
+### ✨ Features
+
+- (feat) Create a new log standarts (`eb0c4b5`)
+
 ## [v1.0.5] - 2026-08-08
 
 ### ⚡ Performance
