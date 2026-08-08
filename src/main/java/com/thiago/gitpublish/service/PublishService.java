@@ -69,7 +69,7 @@ public final class PublishService {
                 ? changelogGenerator.generateSection(tag)
                 : null;
 
-        if (generateChangelog && !dryRun) {
+        if (tagType.equals(TagType.RELEASE) && generateChangelog && !dryRun) {
             changelogFile.prepend(changelogSection);
             git.addFile("CHANGELOG.md");
             git.commit("(docs) update changelog for " + tag);
