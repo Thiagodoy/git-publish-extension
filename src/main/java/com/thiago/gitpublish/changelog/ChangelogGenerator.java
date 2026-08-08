@@ -1,23 +1,32 @@
 package com.thiago.gitpublish.changelog;
 
 import com.thiago.gitpublish.git.GitClient;
+import com.thiago.gitpublish.model.SemanticVersion;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public final class ChangelogGenerator {
 
     private final GitClient git;
+    private final Pattern RELEASE_TAG_PATTERN = Pattern.compile("^v\\d+\\.\\d+\\.\\d+$");
 
     public ChangelogGenerator(GitClient git) {
         this.git = git;
     }
 
     public String generateSection(String tag) {
-        String previousTag = git.latestReachableTag().orElse(null);
+        String previousTag = git.listTags().stream()
+                                .filter(t-> !t.equals(tag))
+                                .filter(t-> RELEASE_TAG_PATTERN.matcher(t).matches())
+                                .map(t-> SemanticVersion.parseStableTag(t))
+                                .max(SemanticVersion::compareTo)
+                                .map(SemanticVersion::releaseTag)
+                                .orElse(null);
         List<String> commits = git.commitSubjectsSince(previousTag);
 
         Map<ConventionalCommitCategoryEnum, List<ChangelogEntry>> grouped = new LinkedHashMap<>();

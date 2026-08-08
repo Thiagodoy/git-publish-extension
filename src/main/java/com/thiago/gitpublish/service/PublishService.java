@@ -65,7 +65,7 @@ public final class PublishService {
             throw new IllegalStateException("Tag '%s' already exists remotely.".formatted(tag));
         }
 
-        String changelogSection = generateChangelog
+        String changelogSection = generateChangelog && tagType.equals(TagType.RELEASE)
                 ? changelogGenerator.generateSection(tag)
                 : null;
 
