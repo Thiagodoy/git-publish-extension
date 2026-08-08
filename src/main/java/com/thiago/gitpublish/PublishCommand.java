@@ -12,6 +12,8 @@ import com.thiago.gitpublish.model.TagType;
 import com.thiago.gitpublish.service.PublishService;
 import com.thiago.gitpublish.service.VersionService;
 import com.thiago.gitpublish.validation.TagPolicy;
+
+import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
@@ -27,6 +29,7 @@ import java.util.concurrent.Callable;
         description = "Validates, creates and pushes a Git tag, then triggers the mapped Jenkins pipeline.",
         usageHelpAutoWidth = true
 )
+@Slf4j
 public final class PublishCommand implements Callable<Integer> {
 
     @Parameters(
@@ -91,7 +94,8 @@ public final class PublishCommand implements Callable<Integer> {
                     result.tag(), result.tagType().displayName());
             return 0;
         } catch (IllegalArgumentException e) {
-            System.err.println("[ERROR] " + e.getMessage());
+
+            log.error("operation:call, message:" + e.getMessage(), e);
             return 2;
         } catch (Exception e) {
             System.err.println("[ERROR] " + e.getMessage());
