@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.3] - 2026-08-08
+
+### 🐛 Bug Fixes
+
+- (fix) Fix the changelog. (`19db552`)
+
 ## [v1.0.2] - 2026-08-08
 
 ### ✨ Features
