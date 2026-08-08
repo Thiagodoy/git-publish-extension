@@ -2,6 +2,31 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.4] - 2026-08-08
+
+### ✨ Features
+
+- (feat) Adding Lombok (`787042a`)
+
+### 🐛 Bug Fixes
+
+- (fix) Add Sl4j libraries (`2e87768`)
+- (fix) Fix logic to generate the changelog only when is release tag (`5964f21`)
+- (fix) Changed default branch used by releases (`757e3e9`)
+
+### ⚡ Performance
+
+- (perf) Implement infos (`97f3e57`)
+
+### 📚 Documentation
+
+- (docs) Remove invalid change (`318a7a1`)
+- (docs) update changelog for v1.0.4-alpha0.01 (`9eac308`)
+
+### 🔄 Other Changes
+
+- Adding Sl4j logs (`9fe62e0`)
+
 ## [v1.0.2] - 2026-08-08
 
 ### ✨ Features
