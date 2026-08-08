@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.0.5] - 2026-08-08
+
+### ⚡ Performance
+
+- (perf) Improving logs using SLF4J (`d7bacce`)
+
 ## [v1.0.4] - 2026-08-08
 
 ### ✨ Features
