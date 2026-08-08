@@ -8,7 +8,7 @@ public record AppConfig(
         Map<String, JenkinsProject> projects
 ) {
     public AppConfig {
-        releaseBranch = blankToDefault(releaseBranch, "master");
+        releaseBranch = blankToDefault(releaseBranch, "main");
         releaseCandidateBranch = blankToDefault(releaseCandidateBranch, "develop");
         projects = projects == null ? Map.of() : Map.copyOf(projects);
     }
