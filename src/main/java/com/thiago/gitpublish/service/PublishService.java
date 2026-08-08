@@ -91,18 +91,18 @@ public final class PublishService {
         printSummary(context, jenkinsProject, requestedTagOrIncrement, generateChangelog);
 
         if (dryRun) {
-            System.out.println("[DRY-RUN] No Git or Jenkins write operation was executed.");
+            log.info("[DRY-RUN] No Git or Jenkins write operation was executed.");
             if (generateChangelog) {
-                System.out.println("[DRY-RUN] Generated changelog section:");
-                System.out.println(changelogSection);
-                System.out.println("[DRY-RUN] git add CHANGELOG.md");
+                log.info("[DRY-RUN] Generated changelog section:");
+                log.info(changelogSection);
+                log.info("[DRY-RUN] git add CHANGELOG.md");
                 System.out.printf("[DRY-RUN] git commit -m \"docs: update changelog for %s\"%n", tag);
                 System.out.printf("[DRY-RUN] git push origin %s%n", branch);
             }
             System.out.printf("[DRY-RUN] git tag -a %s -m \"Publish %s\"%n", tag, tag);
             System.out.printf("[DRY-RUN] git push origin refs/tags/%s%n", tag);
-            System.out.println("[DRY-RUN] Jenkins body:");
-            System.out.println(jenkins.payload(context));
+            log.info("[DRY-RUN] Jenkins body:");
+            log.info(jenkins.payload(context));
             return context;
         }
 
@@ -120,7 +120,7 @@ public final class PublishService {
         System.out.printf("[SUCCESS] Tag '%s' was created and pushed.%n", tag);
 
         jenkins.trigger(jenkinsProject, context);
-        System.out.println("[SUCCESS] Jenkins pipeline was triggered.");
+        log.info("[SUCCESS] Jenkins pipeline was triggered.");
 
         return context;
     }
@@ -131,15 +131,24 @@ public final class PublishService {
             String requestedValue,
             boolean changelog
     ) {
-        System.out.println();
-        System.out.printf("[INFO] Requested:   %s%n", requestedValue);
-        System.out.printf("[INFO] Project:     %s%n", context.project());
-        System.out.printf("[INFO] Branch:      %s%n", context.branch());
-        System.out.printf("[INFO] Commit:      %s%n", context.commit());
-        System.out.printf("[INFO] Tag:         %s%n", context.tag());
-        System.out.printf("[INFO] Type:        %s%n", context.tagType().displayName());
-        System.out.printf("[INFO] Changelog:   %s%n", changelog ? "enabled" : "disabled");
-        System.out.printf("[INFO] Jenkins URL: %s%n", project.url());
-        System.out.println();
+        
+        log.info(String.format("""
+            Requested:   %s
+            Project:     %s
+            Branch:      %s
+            Commit:      %s
+            Tag:         %s
+            Type:        %s
+            Changelog:   %s
+            Jenkins URL: %s
+            """, requestedValue,
+            context.project(),
+            context.branch(),
+            context.commit(),
+            context.tag(),
+            context.tagType().displayName(),
+            changelog ? "enabled" : "disabled",
+            project.url()
+        ));
     }
 }
