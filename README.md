@@ -70,7 +70,6 @@ projects:
     url: "https://jenkins.example.com/job/payment-service/build"
 ```
 
-Environment placeholders in headers use `${VARIABLE_NAME}`.
 
 
 ## Windows installation
@@ -92,6 +91,11 @@ The installer creates `git-publish.cmd` in a directory included in your user `PA
 ## Automatic Semantic Version incrementing
 
 Instead of supplying a full tag, pass `major`, `minor`, or `patch`.
+
+### Short explanation
+
+![alt text](semver.png "Title")
+
 
 The latest stable tag is used as the base version:
 
