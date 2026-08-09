@@ -2,6 +2,22 @@
 
 All notable changes to this project are documented in this file.
 
+## [v1.2.0] - 2026-08-09
+
+### ✨ Features
+
+- (feat) Add new parameter to enable Jenkins trigger (`18f7e08`)
+
+### 🐛 Bug Fixes
+
+- (fix) Renaming class (`81ba6a9`)
+- (fix) Update logs (`e34deb6`)
+
+### 📚 Documentation
+
+- (docs) Adding short explantion about semVer (`3a56fda`)
+- (docs) Improve documentation removing useless sections (`8d1c3a1`)
+
 ## [v1.1.0] - 2026-08-08
 
 ### ✨ Features
