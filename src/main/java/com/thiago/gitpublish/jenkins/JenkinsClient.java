@@ -2,7 +2,7 @@ package com.thiago.gitpublish.jenkins;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thiago.gitpublish.config.JenkinsProject;
+import com.thiago.gitpublish.config.JenkinsRequest;
 import com.thiago.gitpublish.model.PublishContext;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,7 @@ public final class JenkinsClient {
         }
     }
 
-    public void trigger(JenkinsProject project, PublishContext context) {
+    public void trigger(JenkinsRequest request, PublishContext context) {
         
         if(!isTriggerable){
             log.warn("operation= trigger, messag= Operation is disabled");
@@ -52,13 +52,9 @@ public final class JenkinsClient {
 
         String payload = payload(context);
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(project.url()))
+                .uri(URI.create(request.url()))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(payload));
-
-        project.headers().forEach(
-                (name, value) -> requestBuilder.header(name, expandEnvironment(value))
-        );
 
         try {
             HttpResponse<String> response = httpClient.send(
@@ -78,36 +74,5 @@ public final class JenkinsClient {
             Thread.currentThread().interrupt();
             throw new IllegalStateException("Jenkins request was interrupted.", e);
         }
-    }
-
-    private String expandEnvironment(String value) {
-        if (value == null) {
-            return "";
-        }
-
-        String result = value;
-        int start;
-
-        while ((start = result.indexOf("${")) >= 0) {
-            int end = result.indexOf('}', start);
-            if (end < 0) {
-                break;
-            }
-
-            String variable = result.substring(start + 2, end);
-            String environmentValue = System.getenv(variable);
-            if (environmentValue == null) {
-                throw new IllegalStateException(
-                        "Environment variable '%s' referenced by Jenkins headers is not defined."
-                                .formatted(variable)
-                );
-            }
-
-            result = result.substring(0, start)
-                    + environmentValue
-                    + result.substring(end + 1);
-        }
-
-        return result;
     }
 }

@@ -2,11 +2,11 @@ package com.thiago.gitpublish.config;
 
 import java.util.Map;
 
-public record JenkinsProject(
+public record JenkinsRequest(
         String url,
         Map<String, String> headers
 ) {
-    public JenkinsProject {
+    public JenkinsRequest {
         if (url == null || url.isBlank()) {
             throw new IllegalArgumentException("A Jenkins project URL cannot be empty.");
         }

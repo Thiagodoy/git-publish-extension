@@ -5,7 +5,7 @@ import java.util.Map;
 public record AppConfig(
         String releaseBranch,
         String releaseCandidateBranch,
-        Map<String, JenkinsProject> projects
+        Map<String, JenkinsRequest> projects
 ) {
     public AppConfig {
         releaseBranch = blankToDefault(releaseBranch, "main");
@@ -17,8 +17,8 @@ public record AppConfig(
         return value == null || value.isBlank() ? defaultValue : value;
     }
 
-    public JenkinsProject project(String repositoryName) {
-        JenkinsProject project = projects.get(repositoryName);
+    public JenkinsRequest project(String repositoryName) {
+        JenkinsRequest project = projects.get(repositoryName);
         if (project == null) {
             throw new IllegalArgumentException(
                     "No Jenkins mapping exists for repository '%s'. Add it to the projects section."

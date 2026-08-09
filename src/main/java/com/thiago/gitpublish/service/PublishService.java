@@ -3,7 +3,7 @@ package com.thiago.gitpublish.service;
 import com.thiago.gitpublish.changelog.ChangelogFile;
 import com.thiago.gitpublish.changelog.ChangelogGenerator;
 import com.thiago.gitpublish.config.AppConfig;
-import com.thiago.gitpublish.config.JenkinsProject;
+import com.thiago.gitpublish.config.JenkinsRequest;
 import com.thiago.gitpublish.git.GitClient;
 import com.thiago.gitpublish.jenkins.JenkinsClient;
 import com.thiago.gitpublish.model.PublishContext;
@@ -59,7 +59,7 @@ public final class PublishService {
         TagType tagType = tagPolicy.classify(tag);
         tagPolicy.validateBranch(tagType, branch, config);
 
-        JenkinsProject jenkinsProject = config.project(project);
+        JenkinsRequest jenkinsProject = config.project(project);
 
         if (git.localTagExists(tag)) {
             throw new IllegalStateException("Tag '%s' already exists locally.".formatted(tag));
@@ -127,7 +127,7 @@ public final class PublishService {
 
     private void printSummary(
             PublishContext context,
-            JenkinsProject project,
+            JenkinsRequest project,
             String requestedValue,
             boolean changelog
     ) {
