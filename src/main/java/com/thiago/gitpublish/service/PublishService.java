@@ -96,11 +96,11 @@ public final class PublishService {
                 log.info("[DRY-RUN] Generated changelog section:");
                 log.info(changelogSection);
                 log.info("[DRY-RUN] git add CHANGELOG.md");
-                System.out.printf("[DRY-RUN] git commit -m \"docs: update changelog for %s\"%n", tag);
-                System.out.printf("[DRY-RUN] git push origin %s%n", branch);
+                log.info("[DRY-RUN] git commit -m \"docs: update changelog for {}\"\n", tag);
+                log.info("[DRY-RUN] git push origin {}\n", branch);
             }
-            System.out.printf("[DRY-RUN] git tag -a %s -m \"Publish %s\"%n", tag, tag);
-            System.out.printf("[DRY-RUN] git push origin refs/tags/%s%n", tag);
+            log.info("[DRY-RUN] git tag -a {} -m \"Publish {}\"\n", tag, tag);
+            log.info("[DRY-RUN] git push origin refs/tags/{}\n", tag);
             log.info("[DRY-RUN] Jenkins body:");
             log.info(jenkins.payload(context));
             return context;
