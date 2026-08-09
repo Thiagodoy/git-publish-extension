@@ -5,23 +5,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thiago.gitpublish.config.JenkinsProject;
 import com.thiago.gitpublish.model.PublishContext;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Slf4j
 public final class JenkinsClient {
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final boolean isTriggerable;
 
-    public JenkinsClient(HttpClient httpClient) {
+    public JenkinsClient(HttpClient httpClient, boolean isTriggerable) {
         this.httpClient = httpClient;
+        this.isTriggerable = isTriggerable;
     }
 
     public String payload(PublishContext context) {
@@ -41,6 +44,12 @@ public final class JenkinsClient {
     }
 
     public void trigger(JenkinsProject project, PublishContext context) {
+        
+        if(!isTriggerable){
+            log.warn("operation= trigger, messag= Operation is disabled");
+            return;
+        }
+
         String payload = payload(context);
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(project.url()))

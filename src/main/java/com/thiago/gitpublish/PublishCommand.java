@@ -8,7 +8,6 @@ import com.thiago.gitpublish.jenkins.JenkinsClient;
 import com.thiago.gitpublish.changelog.ChangelogFile;
 import com.thiago.gitpublish.changelog.ChangelogGenerator;
 import com.thiago.gitpublish.model.PublishContext;
-import com.thiago.gitpublish.model.TagType;
 import com.thiago.gitpublish.service.PublishService;
 import com.thiago.gitpublish.service.VersionService;
 import com.thiago.gitpublish.validation.TagPolicy;
@@ -71,6 +70,13 @@ public final class PublishCommand implements Callable<Integer> {
     )
     private Path configFile = Path.of(System.getProperty("user.home"), ".git-publish", "config.yml");
 
+    @Option(
+        names = {"-t", "--trigger-jenkins"},
+        description = "Trigger jenkins"
+
+    )
+    private boolean triggerJenkins;
+
     @Override
     public Integer call() {
         try {
@@ -78,7 +84,7 @@ public final class PublishCommand implements Callable<Integer> {
             AppConfig config = new ConfigLoader().load(configFile);
 
             GitClient gitClient = new ProcessGitClient(Path.of("."));
-            JenkinsClient jenkinsClient = new JenkinsClient(HttpClient.newHttpClient());
+            JenkinsClient jenkinsClient = new JenkinsClient(HttpClient.newHttpClient(), triggerJenkins);
             PublishService service = new PublishService(
                     gitClient,
                     jenkinsClient,
@@ -90,7 +96,7 @@ public final class PublishCommand implements Callable<Integer> {
 
             PublishContext result = service.publish(tag, dryRun, changelog, config);
 
-            System.out.printf("%nPublication completed for %s (%s).%n",
+            log.info("%nPublication completed for {} ({}).\n",
                     result.tag(), result.tagType().displayName());
             return 0;
         } catch (IllegalArgumentException e) {
