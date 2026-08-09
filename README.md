@@ -62,26 +62,16 @@ The project key must match the name derived from `git remote get-url origin`.
 Example:
 
 ```yaml
-releaseBranch: master
+releaseBranch: main
 releaseCandidateBranch: develop
 
 projects:
   payment-service:
     url: "https://jenkins.example.com/job/payment-service/build"
-    headers:
-      X-Jenkins-Token: "${PAYMENT_SERVICE_JENKINS_TOKEN}"
 ```
 
 Environment placeholders in headers use `${VARIABLE_NAME}`.
 
-For Jenkins Basic Authentication, define both:
-
-```powershell
-$env:JENKINS_USERNAME = "username"
-$env:JENKINS_API_TOKEN = "api-token"
-```
-
-The variables are optional when the endpoint uses another authentication mechanism.
 
 ## Windows installation
 
@@ -143,7 +133,6 @@ Commits are collected from the latest reachable tag through `HEAD`. Conventional
 - Bug Fixes
 - Performance
 - Documentation
-- Maintenance
 - Other Changes
 
 When not running in dry-run mode, the CLI:
