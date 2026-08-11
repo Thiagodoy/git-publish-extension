@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.0.0] - 2026-08-11
+
+### ✨ Features
+
+- NXDX6-8726: (feat) Adding Test files (`0b86ff5`) Thiago Godoy
+
+### 🐛 Bug Fixes
+
+- NXDX6-746: (fix) Refactorin log message (`ff48731`) Thiago Godoy
+- NXDX6-531: (fix) Refactoring the project (`fae2273`) Thiago Godoy
+
+### ⚡ Performance
+
+- NXDX6-777: (perf) Adding author message (`fb25722`) Thiago Godoy
+
 ## [v1.2.0] - 2026-08-09
 
 ### ✨ Features
