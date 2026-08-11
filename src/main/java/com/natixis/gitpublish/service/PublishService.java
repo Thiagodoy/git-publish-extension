@@ -115,7 +115,7 @@ public final class PublishService {
 
         try {
             git.pushTag(tag);
-            log.info("✓ Tag created");
+            log.info("🟢 Tag created");
         } catch (RuntimeException e) {
             git.deleteLocalTag(tag);
             throw new IllegalStateException(

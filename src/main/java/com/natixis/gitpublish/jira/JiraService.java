@@ -55,8 +55,10 @@ public class JiraService {
 
     public void createRelease(String version, String description) {
 
-        if (!jiraToggle)
+       if(!jiraToggle){
+            log.warn("🔴 Jira Trigger disabled");
             return;
+        }
 
         try {
 
@@ -107,7 +109,7 @@ public class JiraService {
 
         id = objectMapper.readValue(response, ReleaseVersionResponse.class).id();
 
-        log.info("✓Jira version created: {}", id);
+        log.info("🟢Jira version created: {}", id);
         return id;
     }
 
@@ -137,7 +139,7 @@ public class JiraService {
 
             execute(request);
 
-            log.info("✓{}", issue);
+            log.info("🟢{}", issue);
         }
     }
 
