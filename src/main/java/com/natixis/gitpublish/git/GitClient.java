@@ -135,8 +135,9 @@ public final class GitClient {
         String hashCommit = data[1];
         String jiraIssue = extractJiraNumber(data[0]);
         ConventionalCommitCategoryEnum category = classify(data[0]);
+        String author = data[2];
 
-        return new Commit(jiraIssue, data[0], hashCommit, category);
+        return new Commit(jiraIssue, data[0], hashCommit, category, author);
 
     }
 

@@ -40,7 +40,7 @@ public final class ChangelogGenerator {
 
         for (Commit commit : commits) {
              grouped.compute(commit.category(),(key,list)->  {
-                list.add(new ChangelogEntry(commit.category(),  commit.message(), commit.hash()));
+                list.add(new ChangelogEntry(commit.category(),  commit.message(), commit.hash(), commit.author()));
                 return list;
              });   
         }
@@ -61,7 +61,8 @@ public final class ChangelogGenerator {
                         .append(entry.description())
                         .append(" (`")
                         .append(entry.shortCommit())
-                        .append("`)\n");
+                        .append("`) ")
+                        .append(entry.author());
             }
             output.append("\n");
         }
