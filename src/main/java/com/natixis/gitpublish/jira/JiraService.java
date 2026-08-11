@@ -107,7 +107,7 @@ public class JiraService {
 
         id = objectMapper.readValue(response, ReleaseVersionResponse.class).id();
 
-        log.info("✅ Jira version created: {}", id);
+        log.info("✓Jira version created: {}", id);
         return id;
     }
 
@@ -137,7 +137,7 @@ public class JiraService {
 
             execute(request);
 
-            log.info("✅ {}", issue);
+            log.info("✓{}", issue);
         }
     }
 

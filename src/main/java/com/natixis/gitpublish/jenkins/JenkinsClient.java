@@ -74,7 +74,7 @@ public final class JenkinsClient {
             //FIXME: Get the value from Jenkins API
             String id = "987";
 
-            log.info("✅ Build {}", id);   
+            log.info("✓Build {}", id);   
 
 
         } catch (IOException e) {

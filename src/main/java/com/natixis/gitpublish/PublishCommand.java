@@ -106,7 +106,7 @@ public final class PublishCommand implements Callable<Integer> {
 
             PublishContext result = service.publish(tag, dryRun, changelog, config);
 
-            log.info("%nPublication completed for {} ({}).\n",
+            log.info("✓ Publication completed for {} ({}).\n",
                     result.tag(), result.tagType().displayName());
             return 0;
         } catch (IllegalArgumentException e) {

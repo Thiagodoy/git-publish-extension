@@ -110,12 +110,12 @@ public final class PublishService {
             return context;
         }
 
-        log.info("🏷️ Creating Git tag {}...", tag);
+        log.info("🏷️  Creating Git tag {}...", tag);
         git.createAnnotatedTag(tag, "Publish " + tag);
 
         try {
             git.pushTag(tag);
-            log.info(" ✅ Tag created");
+            log.info("✓ Tag created");
         } catch (RuntimeException e) {
             git.deleteLocalTag(tag);
             throw new IllegalStateException(
