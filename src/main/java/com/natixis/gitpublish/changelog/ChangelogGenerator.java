@@ -62,7 +62,7 @@ public final class ChangelogGenerator {
                         .append(" (`")
                         .append(entry.shortCommit())
                         .append("`) ")
-                        .append(entry.author());
+                        .append(entry.author() + "\n");
             }
             output.append("\n");
         }
