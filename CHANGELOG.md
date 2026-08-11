@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.3.2] - 2026-08-11
+
+### 🐛 Bug Fixes
+
+- NXDX6-8746: (fix) Updating the log icone (`2eff5bb`) Thiago Godoy
+
 ## [v2.3.1] - 2026-08-11
 
 ### 🐛 Bug Fixes
