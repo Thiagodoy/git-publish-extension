@@ -45,7 +45,7 @@ public final class JenkinsClient {
 
     public void trigger(GitProperties properties, PublishContext context) {
         
-        log.info("⚙️ Triggering Jenkins...");
+        log.info("⚙️  Triggering Jenkins...");
 
         if(!isTriggerable){
             log.warn("🔴 Jenkins Trigger disabled");
