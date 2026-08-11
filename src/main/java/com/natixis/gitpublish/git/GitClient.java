@@ -131,7 +131,7 @@ public final class GitClient {
 
     private Commit convert(String message) {
 
-        String[] data = message.split("|");
+        String[] data = message.split("\\|");
         String hashCommit = data[1];
         String jiraIssue = extractJiraNumber(data[0]);
         ConventionalCommitCategoryEnum category = classify(data[0]);
