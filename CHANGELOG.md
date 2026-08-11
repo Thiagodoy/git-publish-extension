@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.3.0] - 2026-08-11
+
+### ✨ Features
+
+- NXDX6-8746: (feat) Updating the log (`16d31c3`) Thiago Godoy
+
 ## [v2.2.0] - 2026-08-11
 
 ### ⚡ Performance
