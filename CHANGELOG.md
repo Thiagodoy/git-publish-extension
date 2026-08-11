@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.1.0] - 2026-08-11
+
+### ✨ Features
+
+- NXDX6-8746: (feat) Updating the log (`027308a`) Thiago Godoy
+
 ## [v2.0.0] - 2026-08-11
 
 ### ✨ Features
