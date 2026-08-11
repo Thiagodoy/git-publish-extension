@@ -118,7 +118,7 @@ public final class GitClient {
 
     public List<Commit> commitSubjectsSince(String tag) {
         String range = tag == null || tag.isBlank() ? "HEAD" : tag + "..HEAD";
-        String output = execute("log", "--format=%h|%s", range).stdout();
+        String output = execute("log", "--format=%s|%h|%an", range).stdout();
 
         if (output.isBlank())
             return List.of();
@@ -132,7 +132,7 @@ public final class GitClient {
     private Commit convert(String message) {
 
         String[] data = message.split("|");
-        String hashCommit = data.length > 1 ? data[1] : "";
+        String hashCommit = data[1];
         String jiraIssue = extractJiraNumber(data[0]);
         ConventionalCommitCategoryEnum category = classify(data[0]);
 
