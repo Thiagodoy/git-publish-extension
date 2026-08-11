@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.2.0] - 2026-08-11
+
+### ⚡ Performance
+
+- NXDX6-9387: (perf) Improve log message (`54362b4`) Thiago Godoy
+
 ## [v2.1.0] - 2026-08-11
 
 ### ✨ Features
