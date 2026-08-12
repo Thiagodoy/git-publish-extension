@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [v2.4.0] - 2026-08-12
+
+### ✨ Features
+
+- NXDX6-0987: (feat) Adding logs when the change log is generated (`bff993d`) Thiago Godoy
+
 ## [v2.3.2] - 2026-08-11
 
 ### 🐛 Bug Fixes
