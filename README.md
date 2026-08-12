@@ -18,7 +18,7 @@ A cross-platform Java 21 and Picocli Git extension that:
 
 | Type | Format | Allowed branch |
 |---|---|---|
-| Release | `vX.Y.Z` | `master` by default |
+| Release | `vX.Y.Z` | `main` by default |
 | Release candidate | `vX.Y.Z-rc0.NN` | `develop` by default |
 | Alpha | `vX.Y.Z-alpha0.NN` | Any branch except `main`, `master`, release, or develop |
 
@@ -109,7 +109,7 @@ git publish major -> v2.0.0
 The current branch determines the generated tag category:
 
 ```text
-master  + minor -> v1.5.0
+main  + minor -> v1.5.0
 develop + minor -> v1.5.0-rc0.01
 feature + minor -> v1.5.0-alpha0.01
 ```

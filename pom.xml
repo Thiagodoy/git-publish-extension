@@ -98,7 +98,7 @@
                             <finalName>git-publish</finalName>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.thiago.gitpublish.GitPublishApplication</mainClass>
+                                    <mainClass>com.natixis.gitpublish.GitPublishApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

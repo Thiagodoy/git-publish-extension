@@ -111,10 +111,10 @@ public final class PublishCommand implements Callable<Integer> {
             return 0;
         } catch (IllegalArgumentException e) {
 
-            log.error("operation:call, message:" + e.getMessage(), e);
+            log.error("🔴 " + e.getMessage(), e);
             return 2;
         } catch (Exception e) {
-            log.error("operation:call, message:" + e.getMessage(), e);
+            log.error("🔴 " + e.getMessage(), e);
             return 1;
         }
     }

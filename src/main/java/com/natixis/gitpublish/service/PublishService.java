@@ -74,9 +74,17 @@ public final class PublishService {
             throw new IllegalStateException("Tag '%s' already exists remotely.".formatted(tag));
         }
 
-        String changelogSection = generateChangelog && tagType.equals(TagType.RELEASE)
-                ? changelogGenerator.generateSection(tag)
-                : null;
+        String changelogSection = null;
+        if(generateChangelog){
+            if(tagType.equals(TagType.RELEASE)){
+                log.info("📝 Generating a changelog ...");
+                changelogSection = changelogGenerator.generateSection(tag);    
+            }else{
+                log.info("🟡 Changelog is only built over main branch");
+            }    
+        }else{
+            log.info("🔴 Changelog trigger disabled");
+        }        
 
         if (tagType.equals(TagType.RELEASE) && generateChangelog && !dryRun) {
             changelogFile.prepend(changelogSection);
