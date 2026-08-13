@@ -1,8 +1,10 @@
 package com.natixis.gitpublish.git;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -10,13 +12,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.natixis.gitpublish.changelog.ConventionalCommitCategoryEnum;
 import com.natixis.gitpublish.model.Commit;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class GitClient {
 
     private static final Pattern JIRA_PATTERN = Pattern.compile("^([A-Z][A-Z0-9]+-\\d+):");
+    private static final String PRODUCTION_REF = "refs/git-publish/production";
 
     private final Path workingDirectory;
 
@@ -244,5 +251,223 @@ public final class GitClient {
     }
 
     private record GitResult(int exitCode, String stdout, String stderr) {
+    }
+
+    public String commitOf(String branch) {
+        return execute(
+                "rev-parse",
+                "origin/" + branch).stdout();
+    }
+
+    public void fetchProductionReference() {
+        executeAllowFailure(
+                "fetch",
+                "origin",
+                PRODUCTION_REF + ":" + PRODUCTION_REF);
+    }
+
+    public List<Commit> commitsBetween(String from, String to) {
+
+        String range;
+
+        if (from == null || from.isBlank()) {
+            range = to;
+        } else {
+            range = from + ".." + to;
+        }
+
+        String output = execute(
+                "log",
+                "--format=%s|%h|%an",
+                range).stdout();
+
+        if (output.isBlank()) {
+            return List.of();
+        }
+
+        return output.lines()
+                .map(this::convert)
+                .toList();
+    }
+
+    public void checkout(String branch){
+         log.info(
+                "       🔀 Checkout {}",
+                branch);
+            execute(
+                "checkout",
+                branch);
+    }
+
+    public void merge(String sourceBranch){
+        log.info(
+                "       🔀 Merge {}",
+                sourceBranch);
+
+        execute(
+                "merge",
+                sourceBranch);
+    }
+
+    public void squashMerge(String sourceBranch) {
+
+        log.info(
+                "       🔀 Squash merging {}",
+                sourceBranch);
+
+        execute(
+                "merge",
+                "--squash",
+                sourceBranch);
+    }
+
+    public void commitRelease(String tag) {
+
+        log.info(
+                "       📦 Creating release commit {}",
+                tag);
+
+        execute(
+                "commit",
+                "-m",
+                "Release " + tag);
+    }
+
+    public void resetHard() {
+
+        execute(
+                "reset",
+                "--hard",
+                "HEAD");
+    }
+
+    public void updateProductionReference(
+            String commit) {
+
+        log.info(
+                "       📌 Updating production reference to {}",
+                commit);
+
+        execute(
+                "update-ref",
+                "refs/git-publish/production",
+                commit);
+    }
+
+    public Optional<String> productionReference() {
+
+        GitResult result = executeAllowFailure(
+                "rev-parse",
+                "--verify",
+                "refs/git-publish/production");
+
+        if (result.exitCode() != 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(
+                result.stdout().trim());
+    }
+
+    public void pushProductionReference() {
+
+        execute(
+                "push",
+                "origin",
+                "refs/git-publish/production:"
+                        + "refs/git-publish/production");
+    }
+
+    public boolean hasChangesToCommit() {
+
+        String output = execute(
+                "status",
+                "--porcelain").stdout();
+
+        return !output.isBlank();
+    }
+
+    private String executeAndGetOutput(String... command) {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+
+            // Execute inside the repository directory if needed:
+            // processBuilder.directory(repositoryPath.toFile());
+
+            processBuilder.redirectErrorStream(true);
+
+            Process process = processBuilder.start();
+
+            String output;
+
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            process.getInputStream(),
+                            StandardCharsets.UTF_8))) {
+
+                output = reader.lines()
+                        .collect(Collectors.joining(System.lineSeparator()));
+            }
+
+            int exitCode = process.waitFor();
+
+            if (exitCode != 0) {
+                throw new IllegalStateException(
+                        "Command failed with exit code "
+                                + exitCode
+                                + ": "
+                                + String.join(" ", command)
+                                + System.lineSeparator()
+                                + output);
+            }
+
+            return output.trim();
+
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                    "Failed to execute command: "
+                            + String.join(" ", command),
+                    e);
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+
+            throw new IllegalStateException(
+                    "Command execution interrupted: "
+                            + String.join(" ", command),
+                    e);
+        }
+    }
+
+    public String commitReleaseWithParents(
+            String message,
+            String mainCommit,
+            String developCommit) {
+
+        String tree = executeAndGetOutput(
+                "git",
+                "write-tree").trim();
+
+        //log.debug("Creating release commit");
+        log.info("      📍 Tree: {}", tree);
+        log.info("      📍 Parent #1 main: {}", mainCommit);
+        log.info("      📍 Parent #2 develop: {}", developCommit);
+
+        String commit = executeAndGetOutput(
+                "git",
+                "commit-tree",
+                tree,
+                "-p",
+                mainCommit,
+                "-p",
+                developCommit,
+                "-m",
+                message).trim();
+
+        execute("reset",
+                "--hard",
+                commit);
+
+        return commit;
     }
 }

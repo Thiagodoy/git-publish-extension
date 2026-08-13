@@ -11,7 +11,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,14 +21,11 @@ import com.natixis.gitpublish.git.GitClient;
 import com.natixis.gitpublish.jira.dto.ReleaseVersionRequest;
 import com.natixis.gitpublish.jira.dto.ReleaseVersionResponse;
 import com.natixis.gitpublish.model.Commit;
-import com.natixis.gitpublish.model.SemanticVersion;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JiraService {
-
-    private final static Pattern RELEASE_TAG_PATTERN = Pattern.compile("^v\\d+\\.\\d+\\.\\d+$");
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -53,26 +49,21 @@ public class JiraService {
 
     }
 
-    public void createRelease(String version, String description) {
+    public void createRelease(String version, String description, List<Commit> commits) {
+
+        log.info("🎫  Creating Jira Release...");
 
        if(!jiraToggle){
-            log.warn("🔴 Jira Trigger disabled");
+            log.info("      🔴 Jira Trigger disabled");
             return;
         }
 
         try {
-
-            String previousTag = git.listTags().stream()
-                    .filter(t -> !t.equals(version))
-                    .filter(t -> RELEASE_TAG_PATTERN.matcher(t).matches())
-                    .map(t -> SemanticVersion.parseStableTag(t))
-                    .max(SemanticVersion::compareTo)
-                    .map(SemanticVersion::releaseTag)
-                    .orElse(null);
-            Set<String> issues = git.commitSubjectsSince(previousTag).stream().map(Commit::jiraIssue)
+         
+            Set<String> issues = commits.stream().map(Commit::jiraIssue)
                     .collect(Collectors.toSet());
 
-            log.info("🎫 Jira issues discovered:");
+            log.info("      📌 Jira issues discovered:");
 
             issues.stream()
                     .distinct()
@@ -89,7 +80,7 @@ public class JiraService {
 
     private String createJiraReleaseVersion(String version)
             throws Exception, JsonProcessingException, JsonMappingException {
-        log.info("📦 Creating Jira release {}...", version);
+        log.info("      📦 Creating Jira release {}...", version);
 
         String id = null;
 
@@ -109,7 +100,7 @@ public class JiraService {
 
         id = objectMapper.readValue(response, ReleaseVersionResponse.class).id();
 
-        log.info("🟢Jira version created: {}", id);
+        log.info("      🟢  Jira version created: {}", id);
         return id;
     }
 
@@ -139,7 +130,7 @@ public class JiraService {
 
             execute(request);
 
-            log.info("🟢{}", issue);
+            log.info("      🟢{}", issue);
         }
     }
 

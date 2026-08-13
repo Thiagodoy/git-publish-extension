@@ -48,7 +48,7 @@ public final class JenkinsClient {
         log.info("⚙️  Triggering Jenkins...");
 
         if(!isTriggerable){
-            log.warn("🔴 Jenkins Trigger disabled");
+            log.info("      🔴 Jenkins Trigger disabled");
             return;
         }
 
@@ -74,7 +74,7 @@ public final class JenkinsClient {
             //FIXME: Get the value from Jenkins API
             String id = "987";
 
-            log.info("🟢Build {}", id);   
+            log.info("      🟢Build {}", id);   
 
 
         } catch (IOException e) {

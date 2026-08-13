@@ -5,31 +5,21 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import com.natixis.gitpublish.git.GitClient;
 import com.natixis.gitpublish.model.Commit;
-import com.natixis.gitpublish.model.SemanticVersion;
 
 public final class ChangelogGenerator {
 
     private final GitClient git;
-    private final Pattern RELEASE_TAG_PATTERN = Pattern.compile("^v\\d+\\.\\d+\\.\\d+$");
+
 
     public ChangelogGenerator(GitClient git) {
         this.git = git;
     }
 
-    public String generateSection(String tag) {
-        String previousTag = git.listTags().stream()
-                                .filter(t-> !t.equals(tag))
-                                .filter(t-> RELEASE_TAG_PATTERN.matcher(t).matches())
-                                .map(t-> SemanticVersion.parseStableTag(t))
-                                .max(SemanticVersion::compareTo)
-                                .map(SemanticVersion::releaseTag)
-                                .orElse(null);
-        List<Commit> commits = git.commitSubjectsSince(previousTag);
-
+    public String generateSection(String tag, List<Commit> commits) {
+        
         Map<ConventionalCommitCategoryEnum, List<ChangelogEntry>> grouped = new LinkedHashMap<>();
         grouped.put(ConventionalCommitCategoryEnum.BREAK_CHANGES, new ArrayList<>());
         grouped.put(ConventionalCommitCategoryEnum.FEATURES, new ArrayList<>());
