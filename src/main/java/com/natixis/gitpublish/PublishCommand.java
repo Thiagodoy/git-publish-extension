@@ -7,6 +7,7 @@ import picocli.CommandLine.Parameters;
 
 import java.net.http.HttpClient;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.concurrent.Callable;
 
 import com.natixis.gitpublish.changelog.ChangelogFile;
@@ -17,6 +18,8 @@ import com.natixis.gitpublish.git.GitClient;
 import com.natixis.gitpublish.jenkins.JenkinsClient;
 import com.natixis.gitpublish.jira.JiraService;
 import com.natixis.gitpublish.model.PublishContext;
+import com.natixis.gitpublish.model.SemanticVersion;
+import com.natixis.gitpublish.model.VersionBump;
 import com.natixis.gitpublish.service.PublishService;
 import com.natixis.gitpublish.service.VersionService;
 import com.natixis.gitpublish.validation.TagPolicy;
@@ -58,6 +61,9 @@ public final class PublishCommand implements Callable<Integer> {
                         "--fix" }, paramLabel = "BRANCH", description = "Fix branch to include in the release. Example: --fix=fix/NXXX")
         private String fixBranch;
 
+        @Option(names = { "-ck", "--check" }, paramLabel = "CHECK", description = "Check the last release version published")
+        private boolean checkRelease;
+
         @Override
         public Integer call() {
                 try {
@@ -66,6 +72,20 @@ public final class PublishCommand implements Callable<Integer> {
                         AppConfig config = new ConfigLoader().load(configFile);
 
                         GitClient gitClient = new GitClient(Path.of("."));
+
+                        if (checkRelease) {
+                                gitClient.listTags().stream()
+                                                .filter(tag -> tag.matches(
+                                                                "^v(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)$"))
+                                                .map(SemanticVersion::parseStableTag)
+                                                .max(Comparator.naturalOrder())
+                                                .ifPresent(lastVersion -> {
+                                                     log.info("🏷️  Current Git tag {}...", lastVersion.releaseTag());
+                                                     log.info("🏷️  Next Git tag {}...", lastVersion.increment(VersionBump.parse(tag)).releaseTag());    
+                                                });
+                                return 0;
+                        }
+
                         JenkinsClient jenkinsClient = new JenkinsClient(HttpClient.newHttpClient(), triggerJenkins);
                         JiraService jiraService = new JiraService(HttpClient.newHttpClient(), triggerJira, config,
                                         gitClient);

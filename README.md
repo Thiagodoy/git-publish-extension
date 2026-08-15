@@ -330,6 +330,7 @@ git publish TAG [MODE] [OPTIONS]
 | `-f`, `--fix BRANCH` | No | For a production release, merges the specified fix branch into `develop` before preparing the release. | `--fix=fix/NXDX6-667` |
 | `-h`, `--help` | No | Displays Picocli-generated command help. | `git publish --help` |
 | `-V`, `--version` | No | Displays the CLI version. | `git publish --version` |
+| `-ck`, `--check` | No | Displays the current version and the next one base with parameter. | `git publish minor --ck` |
 
 ------------------------------------------------------------------------
 
